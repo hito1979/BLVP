@@ -10,13 +10,13 @@ import time
 
 class Photomal:
 
-    measuring_cycle = 60 #60秒間隔で測定(実際は10分くらいで良いと思う)
+    measuring_cycle = 60 #60秒間隔で測定(実際は10分くらいで良いと思う);
     PMT_VOLTAGE = 1000 #PMTの電圧
     PMT_integraltime = 100 #積算時間
     PMT_measureTimes = 1 #計測回数
 
     def __init__(self, no):
-        
+
         fileno = len(os.listdir(path="./results/{}".format(no)))+1
         self.no = no
         self.filepath = "./results/{}/{:04}_{}.txt".format(self.no,fileno,self.no)
@@ -38,30 +38,30 @@ class Photomal:
         #接続後こちらを試す
         #self.val = self.measureOnce()
 
-    
+
     def start(self): #計測開始
         t=threading.Thread(target=self.measure)
         t.start()
-         
+
     def __command(char, n=""):
         if n == "":
              ret = (char+"\r").encode('utf-8')
         else:
             ret = char.encode('utf-8') + n.to_bytes(2, byteorder="big")+"\r".encode('utf-8')
         return ret
-    
+
     def __sendCommand(self, char, n=""):
         if n == "":
             self.ser.write(self.__command(char))
         else:
             self.ser.write(self.__command(char, n))
-    
+
     def __readMessage(self):
         line = self.ser.readline()
         line = line.strip().decode('UTF-8')
         print(line)
-        return line 
-   
+        return line
+
     def __sendAndListen(self, mes):
         ans = ""
         self.__sendCommand(mes)
@@ -92,13 +92,13 @@ class Photomal:
 
         self.ser = serial.Serial(comport, baudrate=9600, parity=serial.PARITY_NONE)
         isConnected = self.__checkConnection()
-        
+
         if isConnected == True:
             self.__sendCommand("D")
             self.__sendCommand("V",Photomal.PMT_VOLTAGE)
             self.__sendcommand("P",Photomal.PMT_integraltime)
             self.__sendcommand("R",Photomal.PMT_measureTimes)
-    
+
     def __readCount(self):
         line = self.ser.readline()
         line = line.strip().decode('UTF-8')
@@ -110,13 +110,13 @@ class Photomal:
 		#int b3 = (buf[3] & 0xff);
 		#System.out.println(b3);
 		#ans = b0+b1+b2+b3;
-        
+
     def measureOnce(self):
         self.__sendCommand("S")
         time.sleep(1500)
         ans = self.__readCount()
         return ans
- 
+
 
 if __name__=='__main__':
     pm1 = Photomal(1) #フォトマル1を選択;
