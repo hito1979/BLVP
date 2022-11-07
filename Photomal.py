@@ -119,7 +119,7 @@ class Photomal:
  
 
 if __name__=='__main__':
-    pm1 = Photomal(1) #フォトマル1を選択
+    pm1 = Photomal(1) #フォトマル1を選択;
     pm2 = Photomal(2) #フォトマル2を選択
     pm1.start()
     pm2.start()
