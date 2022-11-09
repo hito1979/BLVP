@@ -100,9 +100,14 @@ class Photomal:
             self.__sendcommand("R",Photomal.PMT_measureTimes)
 
     def __readCount(self):
-        line = self.ser.readline()
-        line = line.strip().decode('UTF-8')
-        print(line)
+        b0 = self.ser.read().strip().decode('UTF-8')
+        b1 = self.ser.read().strip().decode('UTF-8')
+        b2 = self.ser.read().strip().decode('UTF-8')
+        b3 = self.ser.read().strip().decode('UTF-8')
+        print(b0)
+        print(b1)
+        print(b2)
+        print(b3)
         print("これを数字に直す必要あり、4ビット単位？")
         #int b0=(buf[0] & 0xff)*256*256*256;
 		#int b1 =(buf[1] & 0xff)*256*256;
@@ -113,7 +118,7 @@ class Photomal:
 
     def measureOnce(self):
         self.__sendCommand("S")
-        time.sleep(1500)
+        time.sleep(1)
         ans = self.__readCount()
         return ans
 
@@ -126,4 +131,4 @@ if __name__=='__main__':
 
     #接続後これを試す
     pm1.__initialize_communication()
-    #pm1.measureOnce()
+    pm1.measureOnce()
